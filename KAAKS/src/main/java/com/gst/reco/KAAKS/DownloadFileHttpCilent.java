@@ -14,14 +14,14 @@ import org.apache.http.impl.client.HttpClientBuilder;
 public class DownloadFileHttpCilent {
 	  public static void main(String[] args) throws Exception {
 	        DownloadFileHttpCilent client = new DownloadFileHttpCilent();
-	        client.download();
+	        client.download("fileName");
 	    }
 	 
-	    public void download() {
+	    public int download(String fileName) {
 	        try {
 	            CloseableHttpClient client = HttpClientBuilder.create().build();
 	            HttpGet request = new HttpGet(
-	                "http://www.jbworlds.com/jbworlds.com/A_1553622766.xlsx");
+	                "http://www.jbworlds.com/jbworlds.com/instantreco/upload/A_"+fileName+".xlsx");
 	 
 	            HttpResponse response = client.execute(request);
 	            HttpEntity entity = response.getEntity();
@@ -33,7 +33,7 @@ public class DownloadFileHttpCilent {
 	 
 	            InputStream is = entity.getContent();
 	 
-	            String filePath = "c:\\A_1553622766.xlsx";
+	            String filePath = "c:\\instantreco\\A_"+fileName+".xlsx";
 	            FileOutputStream fos = new FileOutputStream(new File(filePath));
 	 
 	            int inByte;
@@ -45,12 +45,57 @@ public class DownloadFileHttpCilent {
 	 
 	            client.close();
 	            System.out.println("File Download Completed!!!");
+	            return responseCode;
 	        } catch (ClientProtocolException e) {
+	        	
 	            e.printStackTrace();
+	            return 404;
 	        } catch (UnsupportedOperationException e) {
 	            e.printStackTrace();
+	            return 404;
 	        } catch (IOException e) {
 	            e.printStackTrace();
+	            return 404;
+	        }
+	    }
+	    public int downloadReg(String fileName) {
+	        try {
+	            CloseableHttpClient client = HttpClientBuilder.create().build();
+	            HttpGet request = new HttpGet(
+	                "http://www.jbworlds.com/jbworlds.com/instantreco/upload/Reg_"+fileName+".xlsx");
+	 
+	            HttpResponse response = client.execute(request);
+	            HttpEntity entity = response.getEntity();
+	 
+	            int responseCode = response.getStatusLine().getStatusCode();
+	 
+	            System.out.println("Request Url: " + request.getURI());
+	            System.out.println("Response Code: " + responseCode);
+	 
+	            InputStream is = entity.getContent();
+	 
+	            String filePath = "c:\\instantreco\\Reg_"+fileName+".xlsx";
+	            FileOutputStream fos = new FileOutputStream(new File(filePath));
+	 
+	            int inByte;
+	            while ((inByte = is.read()) != -1) {
+	                fos.write(inByte);
+	            }
+	            is.close();
+	            fos.close();
+	 
+	            client.close();
+	            System.out.println(" Reg File Download Completed!!!");
+	            return responseCode;
+	        } catch (ClientProtocolException e) {
+	            e.printStackTrace();
+	            return 404;
+	        } catch (UnsupportedOperationException e) {
+	            e.printStackTrace();
+	            return 404;
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	            return 404;
 	        }
 	    }
 

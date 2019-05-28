@@ -25,17 +25,18 @@ public class DataCheck {
 	
 	 
 
-	public static String[] getDetail () {
-	
-		String[] tempfile = new String[2];
+	public  String[] getDetail () {
+	System.out.println("in database");
+		String[] tempfile = new String[3];
 		try {
 			dbconn = new DAO.DAOClass().getConnection();
 			Statement stmt = dbconn.createStatement();
-			ResultSet rs = stmt.executeQuery("select name,email from utility where status='not2'");
+			ResultSet rs = stmt.executeQuery("select name,email,uname,status from utility where status='not'");
 			while (rs.next()) {
 				tempfile[0] = rs.getString("name");
 				tempfile[1] = rs.getString("email");
-				//System.out.println("" + tempfile);
+				tempfile[2] = rs.getString("uname");
+				System.out.println("" + rs.getString("status"));
 				break;
 			}
 			dbconn.close();
@@ -46,15 +47,40 @@ public class DataCheck {
 		return tempfile;
 	}
 	
-	public static void main(String args[]){
-		String data[]=getDetail();
-		if("".equals(data)){
-				
-		System.out.println(data[0]);
+	public  String[] setDetail (String fileName,String flag ) {
+		
+		String[] tempfile = new String[3];
+		try {
+			dbconn = new DAO.DAOClass().getConnection();
+			
+			
+			 // create the java mysql update preparedstatement
+		      String query = "UPDATE utility SET STATUS=? WHERE NAME= ?";
+		      PreparedStatement preparedStmt = dbconn.prepareStatement(query);
+		      preparedStmt.setString (1, flag);
+		      preparedStmt.setString(2, fileName);
+
+		      // execute the java preparedstatement
+		      preparedStmt.executeUpdate();
+			
+			
+			//System.out.println(getDetail());
+			
+		/*	Statement stmt = dbconn.createStatement();
+			ResultSet rs = stmt.executeQuery("UPDATE utility SET STATUS='sent' WHERE NAME= "+fileName+"");
+			while (rs.next()) {
+				tempfile[0] = rs.getString("name");
+				tempfile[1] = rs.getString("email");
+				tempfile[2] = rs.getString("uname");
+				//System.out.println("" + tempfile);
+				break;
+			}*/
+			dbconn.close();
+			
+		} catch (Exception e) {
+			System.out.println(e);
 		}
-		else{
-			System.out.println("tt");
-		}
-	}
+		return tempfile;
+	} 
 
 }
