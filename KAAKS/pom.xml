@@ -72,35 +72,37 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				 <version>3.1.2</version>
-				<configuration>
-					<archive>
-						<manifest>
-							<mainClass>com.gst.reco.KAAKS.Home</mainClass>
-							<addClasspath>true</addClasspath>
-						</manifest>
-						<classpathPrefix>libs/</classpathPrefix>
-					</archive>
-				</configuration>
-			</plugin>
-			<plugin>
-			<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
 					<execution>
-					<id>copy-dependencies</id>
+						<id>copy-dependencies</id>
 						<phase>prepare-package</phase>
 						<goals>
 							<goal>copy-dependencies</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${project.build.directory}/libs/</outputDirectory>
+							<outputDirectory>
+								${project.build.directory}/libs/
+							</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
-
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<mainClass>
+								DAO.Home
+							</mainClass>
+							<classpathPrefix>libs/</classpathPrefix>
+						 </manifest>
+					</archive>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
